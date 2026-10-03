@@ -12,6 +12,14 @@ API REST desenvolvida em Java e Spring Boot para gerir o ecossistema da rede de 
 - Maven instalado
 - PostgreSQL a correr localmente
 
+## Documentação da API e Evidências
+
+- **Repositório Público**: https://github.com/julianastefani/raizes-nordeste-api
+- **Documentação Swagger (OpenAPI)**: 
+  - Após iniciar a aplicação, aceda localmente através da URL: `http://localhost:8080/swagger-ui/index.html`
+- **Coleção Postman / Testes**:
+  - A coleção de testes ou os scripts de validação encontram-se disponíveis na raiz do projeto (ou podem ser consultados através do ficheiro de testes integrado).
+
 ## Como Configurar e Executar
 1. Clone o repositório:
    ```bash
