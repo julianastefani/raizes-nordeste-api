@@ -15,4 +15,4 @@ API REST desenvolvida em Java e Spring Boot para gerir o ecossistema da rede de 
 ## Como Configurar e Executar
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/teu-utilizador/raizes-nordeste-api.git](https://github.com/teu-utilizador/raizes-nordeste-api.git)
+   git clone https://github.com/julianastefani/raizes-nordeste-api.git
