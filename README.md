@@ -10,7 +10,7 @@ API REST desenvolvida em Java e Spring Boot para gerir o ecossistema da rede de 
 ## Pré-requisitos
 - JDK 25 instalado
 - Maven instalado
-- PostgreSQL a correr localmente
+- PostgreSQL localmente
 
 ## Documentação da API e Evidências
 
