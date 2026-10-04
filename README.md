@@ -342,7 +342,7 @@ Para utilizar a coleção é necessário ter a aplicação em execução e utili
 
 Os testes de integração utilizam JUnit, MockMvc e um banco H2 em memória separado do banco principal.
 
-Atualmente existem 12 testes automatizados e todos estão passando.
+Atualmente existem 13 testes automatizados e todos estão passando.
 
 Foram testados cenários como:
 
