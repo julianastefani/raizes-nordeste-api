@@ -39,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authorizationHeader = request.getHeader("Authorization");
 
-        // Não existe token
         if (authorizationHeader == null
                 || !authorizationHeader.startsWith("Bearer ")) {
 
@@ -49,35 +48,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authorizationHeader.substring(7);
 
-        // TESTE TEMPORÁRIO
-        System.out.println("=== TESTE JWT ===");
-        System.out.println("TOKEN RECEBIDO: SIM");
-
-        boolean tokenValido = jwtService.tokenValido(token);
-
-        System.out.println("TOKEN VALIDO: " + tokenValido);
-
-        if (!tokenValido) {
-            System.out.println("JWT REJEITADO PELO JwtService");
-            System.out.println("=================");
+        if (!jwtService.tokenValido(token)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String email = jwtService.extrairEmail(token);
 
-        System.out.println("EMAIL DO TOKEN: " + email);
-
         Usuario usuario = usuarioRepository
                 .findByEmail(email)
                 .orElse(null);
-
-        if (usuario == null) {
-            System.out.println("USUARIO NAO ENCONTRADO");
-        } else {
-            System.out.println("USUARIO ENCONTRADO: " + usuario.getEmail());
-            System.out.println("PERFIL: " + usuario.getPerfil());
-        }
 
         if (usuario != null
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -97,12 +77,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder
                     .getContext()
                     .setAuthentication(authentication);
-
-            System.out.println("AUTENTICACAO CRIADA");
-            System.out.println("AUTORIDADE: " + autoridade.getAuthority());
         }
-
-        System.out.println("=================");
 
         filterChain.doFilter(request, response);
     }
