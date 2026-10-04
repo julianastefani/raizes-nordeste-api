@@ -360,6 +360,17 @@ repository  -> acesso ao banco de dados
 service     -> regras de negócio
 ```
 
+## Scripts do banco de dados
+
+Os scripts SQL utilizados para documentar e versionar a estrutura inicial do banco estão disponíveis em:
+
+`src/main/resources/db/migration`
+
+- `V1__create_tables.sql` - criação das tabelas e relacionamentos.
+- `V2__seed_initial_data.sql` - carga inicial de unidades, produtos e estoque.
+
+Durante o desenvolvimento, a estrutura do banco também é atualizada pelo Hibernate através da configuração `spring.jpa.hibernate.ddl-auto=update`.
+
 ## Repositório
 
 O código-fonte do projeto está disponível no GitHub:
