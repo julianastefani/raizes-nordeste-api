@@ -4,6 +4,7 @@ import com.raizesdonordeste.api.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -13,14 +14,20 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String CHAVE_SECRETA =
-            "raizes-do-nordeste-chave-jwt-secreta-2026-seguranca-api";
+    private final String chaveSecreta;
+    private final long tempoExpiracao;
 
-    private static final long TEMPO_EXPIRACAO = 1000 * 60 * 60; // 1 hora
+    public JwtService(
+            @Value("${jwt.secret}") String chaveSecreta,
+            @Value("${jwt.expiration-ms:3600000}") long tempoExpiracao
+    ) {
+        this.chaveSecreta = chaveSecreta;
+        this.tempoExpiracao = tempoExpiracao;
+    }
 
     private SecretKey getChave() {
         return Keys.hmacShaKeyFor(
-                CHAVE_SECRETA.getBytes(StandardCharsets.UTF_8)
+                chaveSecreta.getBytes(StandardCharsets.UTF_8)
         );
     }
 
@@ -28,7 +35,7 @@ public class JwtService {
 
         Date agora = new Date();
         Date expiracao = new Date(
-                agora.getTime() + TEMPO_EXPIRACAO
+                agora.getTime() + tempoExpiracao
         );
 
         return Jwts.builder()

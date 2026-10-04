@@ -1,5 +1,6 @@
 package com.raizesdonordeste.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizesdonordeste.api.enums.PerfilUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -24,6 +25,7 @@ public class Usuario {
     private String email;
 
     @NotBlank(message = "A senha é obrigatória.")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String senha;
 

@@ -15,13 +15,16 @@ public class PagamentoService {
 
     private final PagamentoRepository pagamentoRepository;
     private final PedidoRepository pedidoRepository;
+    private final AuditoriaService auditoriaService;
 
     public PagamentoService(
             PagamentoRepository pagamentoRepository,
-            PedidoRepository pedidoRepository
+            PedidoRepository pedidoRepository,
+            AuditoriaService auditoriaService
     ) {
         this.pagamentoRepository = pagamentoRepository;
         this.pedidoRepository = pedidoRepository;
+        this.auditoriaService = auditoriaService;
     }
 
     @Transactional
@@ -63,6 +66,17 @@ public class PagamentoService {
 
         pedidoRepository.save(pedido);
 
-        return pagamentoRepository.save(pagamento);
+        Pagamento pagamentoSalvo =
+                pagamentoRepository.save(pagamento);
+
+        auditoriaService.registrar(
+                resultado == StatusPagamento.APROVADO
+                        ? "PAGAMENTO_APROVADO"
+                        : "PAGAMENTO_RECUSADO",
+                "PAGAMENTO",
+                pagamentoSalvo.getId()
+        );
+
+        return pagamentoSalvo;
     }
 }

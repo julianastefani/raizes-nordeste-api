@@ -59,11 +59,18 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // =========================
+                        // ENDPOINTS PÚBLICOS
+                        // =========================
+
                         // Login público
                         .requestMatchers("/auth/**").permitAll()
 
                         // Cadastro de usuário público
-                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/usuarios"
+                        ).permitAll()
 
                         // Swagger público
                         .requestMatchers(
@@ -73,12 +80,197 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
+
+                        // =========================
+                        // USUÁRIOS / LGPD
+                        // =========================
+
+                        // Anonimizar dados pessoais:
+                        // somente ADMIN
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/usuarios/*/anonimizar"
+                        ).hasRole("ADMIN")
+
+
+                        // =========================
+                        // PRODUTOS
+                        // =========================
+
                         // Criar produto:
                         // somente GERENTE ou ADMIN
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/produtos"
                         ).hasAnyRole("GERENTE", "ADMIN")
+
+
+                        // =========================
+                        // ESTOQUE
+                        // =========================
+
+                        // Criar estoque:
+                        // somente GERENTE ou ADMIN
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/estoque"
+                        ).hasAnyRole("GERENTE", "ADMIN")
+
+                        // Alterar/baixar estoque:
+                        // somente GERENTE ou ADMIN
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/estoque/**"
+                        ).hasAnyRole("GERENTE", "ADMIN")
+
+                        // Consultar estoque:
+                        // qualquer usuário autenticado
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/estoque/**"
+                        ).authenticated()
+
+
+                        // =========================
+                        // FIDELIDADE
+                        // =========================
+
+                        // Consultar fidelidade:
+                        // qualquer usuário autenticado
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/fidelidade/**"
+                        ).authenticated()
+
+                        // Aderir ao programa:
+                        // qualquer usuário autenticado
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/fidelidade/**"
+                        ).authenticated()
+
+                        // Adicionar ou resgatar pontos:
+                        // somente GERENTE ou ADMIN
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/fidelidade/usuario/*/pontos/**"
+                        ).hasAnyRole("GERENTE", "ADMIN")
+
+                        // Demais alterações de fidelidade:
+                        // qualquer usuário autenticado
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/fidelidade/**"
+                        ).authenticated()
+
+
+                        // =========================
+                        // PROMOÇÕES
+                        // =========================
+
+                        // Criar promoção:
+                        // somente GERENTE ou ADMIN
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/promocoes"
+                        ).hasAnyRole("GERENTE", "ADMIN")
+
+                        // Alterar promoção:
+                        // somente GERENTE ou ADMIN
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/promocoes/**"
+                        ).hasAnyRole("GERENTE", "ADMIN")
+
+                        // Consultar promoções:
+                        // qualquer usuário autenticado
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/promocoes/**"
+                        ).authenticated()
+
+
+                        // =========================
+                        // PEDIDOS
+                        // =========================
+
+                        // Criar pedido
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/pedidos"
+                        ).hasAnyRole(
+                                "CLIENTE",
+                                "ATENDENTE",
+                                "GERENTE",
+                                "ADMIN"
+                        )
+
+                        // Alterar status do pedido
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/pedidos/*/status"
+                        ).hasAnyRole(
+                                "ATENDENTE",
+                                "COZINHA",
+                                "GERENTE",
+                                "ADMIN"
+                        )
+
+                        // Consultar pedidos
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/pedidos/**"
+                        ).hasAnyRole(
+                                "CLIENTE",
+                                "ATENDENTE",
+                                "COZINHA",
+                                "GERENTE",
+                                "ADMIN"
+                        )
+
+
+                        // =========================
+                        // PAGAMENTOS
+                        // =========================
+
+                        // Processar pagamento mock
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/pagamentos/pedido/*"
+                        ).hasAnyRole(
+                                "CLIENTE",
+                                "ATENDENTE",
+                                "GERENTE",
+                                "ADMIN"
+                        )
+
+                        // Consultar pagamentos
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/pagamentos/**"
+                        ).hasAnyRole(
+                                "CLIENTE",
+                                "ATENDENTE",
+                                "GERENTE",
+                                "ADMIN"
+                        )
+
+
+                        // =========================
+                        // AUDITORIA
+                        // =========================
+
+                        // Consultar registros de auditoria:
+                        // somente ADMIN
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/auditoria/**"
+                        ).hasRole("ADMIN")
+
+
+                        // =========================
+                        // DEMAIS ENDPOINTS
+                        // =========================
 
                         // Todos os demais endpoints exigem autenticação
                         .anyRequest().authenticated()

@@ -2,12 +2,13 @@ package com.raizesdonordeste.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class RaizesNordesteApiApplicationTests {
 
     @Test
     void contextLoads() {
     }
-
 }

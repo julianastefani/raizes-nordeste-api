@@ -22,7 +22,8 @@ public class UsuarioController {
             @Valid @RequestBody Usuario usuario
     ) {
 
-        Usuario usuarioSalvo = usuarioService.cadastrar(usuario);
+        Usuario usuarioSalvo =
+                usuarioService.cadastrar(usuario);
 
         // Nunca devolver a senha na resposta da API.
         usuarioSalvo.setSenha(null);
@@ -30,5 +31,19 @@ public class UsuarioController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(usuarioSalvo);
+    }
+
+    @PatchMapping("/{usuarioId}/anonimizar")
+    public ResponseEntity<Usuario> anonimizar(
+            @PathVariable Long usuarioId
+    ) {
+
+        Usuario usuarioAnonimizado =
+                usuarioService.anonimizar(usuarioId);
+
+        // Nunca devolver a senha na resposta da API.
+        usuarioAnonimizado.setSenha(null);
+
+        return ResponseEntity.ok(usuarioAnonimizado);
     }
 }

@@ -25,19 +25,22 @@ public class PedidoService {
     private final ItemPedidoRepository itemPedidoRepository;
     private final UnidadeRepository unidadeRepository;
     private final EstoqueService estoqueService;
+    private final AuditoriaService auditoriaService;
 
     public PedidoService(
             PedidoRepository pedidoRepository,
             ProdutoRepository produtoRepository,
             ItemPedidoRepository itemPedidoRepository,
             UnidadeRepository unidadeRepository,
-            EstoqueService estoqueService
+            EstoqueService estoqueService,
+            AuditoriaService auditoriaService
     ) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
         this.itemPedidoRepository = itemPedidoRepository;
         this.unidadeRepository = unidadeRepository;
         this.estoqueService = estoqueService;
+        this.auditoriaService = auditoriaService;
     }
 
     @Transactional
@@ -121,6 +124,13 @@ public class PedidoService {
             );
         }
 
+        // Registra a criação do pedido na auditoria.
+        auditoriaService.registrar(
+                "CRIAR_PEDIDO",
+                "PEDIDO",
+                pedidoSalvo.getId()
+        );
+
         return pedidoSalvo;
     }
 
@@ -152,7 +162,16 @@ public class PedidoService {
 
         pedido.setStatus(novoStatus);
 
-        return pedidoRepository.save(pedido);
+        Pedido pedidoSalvo = pedidoRepository.save(pedido);
+
+        // Registra a alteração de status na auditoria.
+        auditoriaService.registrar(
+                "ALTERAR_STATUS_PEDIDO",
+                "PEDIDO",
+                pedidoSalvo.getId()
+        );
+
+        return pedidoSalvo;
     }
 
     private boolean transicaoPermitida(
