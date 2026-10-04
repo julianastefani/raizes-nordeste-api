@@ -318,6 +318,26 @@ http://localhost:8080/api-docs
 
 Para testar os endpoints protegidos pelo Swagger é necessário realizar o login e informar o JWT na opção `Authorize`.
 
+## Postman
+
+Também foi disponibilizada uma coleção do Postman com os principais endpoints da API.
+
+O arquivo da coleção está disponível na pasta:
+
+```text
+postman/
+```
+
+A coleção utiliza a variável `baseUrl` apontando para:
+
+```text
+http://localhost:8080
+```
+
+Após realizar o login, o token JWT pode ser utilizado nas demais requisições protegidas da API.
+
+Para utilizar a coleção é necessário ter a aplicação em execução e utilizar credenciais válidas cadastradas no ambiente local.
+
 ## Testes
 
 Os testes de integração utilizam JUnit, MockMvc e um banco H2 em memória separado do banco principal.
@@ -360,22 +380,48 @@ repository  -> acesso ao banco de dados
 service     -> regras de negócio
 ```
 
+## Diagramas do projeto
+
+Foram criados dois diagramas para representar a organização da aplicação e o modelo de dados utilizado no projeto.
+
+### Arquitetura da API
+
+O diagrama abaixo apresenta o fluxo geral da aplicação, desde o acesso à API até a persistência dos dados.
+
+![Diagrama de arquitetura da API](docs/diagrama-arquitetura.png)
+
+### Modelo de dados
+
+O diagrama entidade-relacionamento (DER) apresenta as principais entidades utilizadas pela aplicação e seus relacionamentos.
+
+![Diagrama entidade-relacionamento](docs/diagrama-entidades.png)
+
 ## Scripts do banco de dados
 
 Os scripts SQL utilizados para documentar e versionar a estrutura inicial do banco estão disponíveis em:
 
-`src/main/resources/db/migration`
+```text
+src/main/resources/db/migration
+```
 
-- `V1__create_tables.sql` - criação das tabelas e relacionamentos.
+Os arquivos disponíveis são:
+
+- `V1__create_tables.sql` - criação das tabelas e relacionamentos;
 - `V2__seed_initial_data.sql` - carga inicial de unidades, produtos e estoque.
 
-Durante o desenvolvimento, a estrutura do banco também é atualizada pelo Hibernate através da configuração `spring.jpa.hibernate.ddl-auto=update`.
+Durante o desenvolvimento, a estrutura do banco também é atualizada pelo Hibernate através da configuração:
+
+```properties
+spring.jpa.hibernate.ddl-auto=update
+```
 
 ## Repositório
 
 O código-fonte do projeto está disponível no GitHub:
 
-`https://github.com/julianastefani/raizes-nordeste-api`
+```text
+https://github.com/julianastefani/raizes-nordeste-api
+```
 
 ## Autor
 
