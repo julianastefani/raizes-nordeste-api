@@ -1,0 +1,744 @@
+{
+  "info": {
+    "_postman_id": "4e70b278-fb56-4fd8-a0a3-60bc397ea5e9",
+    "name": "Raízes do Nordeste API",
+    "description": "Coleção Postman para demonstração e testes da API Raízes do Nordeste.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58718675",
+    "_collection_link": "https://go.postman.co/collection/58718675-4e70b278-fb56-4fd8-a0a3-60bc397ea5e9?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Autenticação",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login realizado com sucesso', function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json.token) { pm.collectionVariables.set('token', json.token); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@raizes.com\",\n  \"senha\": \"ALTERE_A_SENHA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuários e LGPD",
+      "item": [
+        {
+          "name": "Cadastrar cliente",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Cliente Postman\",\n  \"email\": \"cliente.postman@raizes.com\",\n  \"senha\": \"Cliente@123\",\n  \"perfil\": \"CLIENTE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Anonimizar usuário (ADMIN)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioId}}/anonimizar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}",
+                "anonimizar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Produtos",
+      "item": [
+        {
+          "name": "Listar produtos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar produto (GERENTE/ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Cuscuz Nordestino\",\n  \"descricao\": \"Cuscuz nordestino tradicional\",\n  \"preco\": 15.9\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Estoque",
+      "item": [
+        {
+          "name": "Listar estoque",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estoque",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Consultar estoque por unidade e produto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estoque/unidade/{{unidadeId}}/produto/{{produtoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estoque",
+                "unidade",
+                "{{unidadeId}}",
+                "produto",
+                "{{produtoId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar estoque (GERENTE/ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unidade\": {\n    \"id\": 1\n  },\n  \"produto\": {\n    \"id\": 1\n  },\n  \"quantidade\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estoque",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Baixar estoque (GERENTE/ADMIN)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estoque/unidade/{{unidadeId}}/produto/{{produtoId}}/baixa?quantidade=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estoque",
+                "unidade",
+                "{{unidadeId}}",
+                "produto",
+                "{{produtoId}}",
+                "baixa"
+              ],
+              "query": [
+                {
+                  "key": "quantidade",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pedidos",
+      "item": [
+        {
+          "name": "Listar pedidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar pedidos por canal APP",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos?canalPedido=APP",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ],
+              "query": [
+                {
+                  "key": "canalPedido",
+                  "value": "APP"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": 1,\n  \"unidadeId\": 1,\n  \"canalPedido\": \"APP\",\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"quantidade\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar status do pedido",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos/{{pedidoId}}/status?status=EM_PREPARACAO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos",
+                "{{pedidoId}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "EM_PREPARACAO"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pagamentos",
+      "item": [
+        {
+          "name": "Pagamento aprovado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos/pedido/{{pedidoId}}?resultado=APROVADO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos",
+                "pedido",
+                "{{pedidoId}}"
+              ],
+              "query": [
+                {
+                  "key": "resultado",
+                  "value": "APROVADO"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pagamento recusado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos/pedido/{{pedidoId}}?resultado=RECUSADO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos",
+                "pedido",
+                "{{pedidoId}}"
+              ],
+              "query": [
+                {
+                  "key": "resultado",
+                  "value": "RECUSADO"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Fidelidade",
+      "item": [
+        {
+          "name": "Consultar fidelidade do usuário",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/usuario/{{usuarioId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "usuario",
+                "{{usuarioId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Aderir ao programa",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/usuario/{{usuarioId}}/aderir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "usuario",
+                "{{usuarioId}}",
+                "aderir"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Adicionar pontos (GERENTE/ADMIN)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/usuario/{{usuarioId}}/pontos/adicionar?pontos=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "usuario",
+                "{{usuarioId}}",
+                "pontos",
+                "adicionar"
+              ],
+              "query": [
+                {
+                  "key": "pontos",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resgatar pontos",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/usuario/{{usuarioId}}/pontos/resgatar?pontos=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "usuario",
+                "{{usuarioId}}",
+                "pontos",
+                "resgatar"
+              ],
+              "query": [
+                {
+                  "key": "pontos",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancelar consentimento",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/usuario/{{usuarioId}}/consentimento/cancelar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "usuario",
+                "{{usuarioId}}",
+                "consentimento",
+                "cancelar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Promoções",
+      "item": [
+        {
+          "name": "Listar promoções",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/promocoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "promocoes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar promoção por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/promocoes/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "promocoes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar promoções ativas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/promocoes/ativas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "promocoes",
+                "ativas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar promoção (GERENTE/ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Promoção Teste\",\n  \"descricao\": \"Promoção criada para demonstração\",\n  \"percentualDesconto\": 10.0,\n  \"dataInicio\": \"2026-10-01T00:00:00\",\n  \"dataFim\": \"2026-10-31T23:59:59\",\n  \"ativa\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/promocoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "promocoes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Alterar status da promoção (GERENTE/ADMIN)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/promocoes/1/status?ativa=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "promocoes",
+                "1",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "ativa",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auditoria",
+      "item": [
+        {
+          "name": "Listar auditoria (GERENTE/ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auditoria",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auditoria"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Auditoria por recurso PEDIDO",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auditoria/recurso/PEDIDO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auditoria",
+                "recurso",
+                "PEDIDO"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "usuarioId",
+      "value": "1"
+    },
+    {
+      "key": "produtoId",
+      "value": "1"
+    },
+    {
+      "key": "unidadeId",
+      "value": "1"
+    },
+    {
+      "key": "pedidoId",
+      "value": "1"
+    }
+  ]
+}
